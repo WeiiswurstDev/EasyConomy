@@ -1,0 +1,20 @@
+general:
+  insufficientFunds: "&cDir fehlen &e%s&c, um das zu bezahlen!"
+  notAnumber: "&e%s &cist keine Zahl oder zu groß/zu klein. &7Denk dran, Kommas als Punkt zu schreiben!"
+  syntax: "&cSyntax: &e%s"
+  noPerms: "&cFehlende Rechte: &e%s"
+  playerOnly: "&cDieser Befehl ist nur für Spieler."
+  noAccount: "&e%s &chat den Server noch nie betreten!"
+
+balance:
+  ofOther: "Kontostand von &6%s&7: &6%s"
+  ofSelf: "Kontostand: &6%s"
+
+eco:
+  helpMessage: "Befehle: &a/eco, /eco give|take|set <player> <amount>, /bal [player], /pay <player> <amount>"
+  success: "Du hast den Kontostand von %s um %s verändert. Er hat nun %s"
+
+pay:
+  you: "Du hast &6%s %s&7 bezahlt.. Du hast nun &6%s&7."
+  target: "&6%s &7hat dir&6 %s&7 bezahlt. Du hast nun &6%s&7."
+  self: "&cDu kannst dir nicht selbst Geld überweisen!"

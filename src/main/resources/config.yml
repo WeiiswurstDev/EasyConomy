@@ -1,0 +1,22 @@
+language: en
+
+prefix: "&3EasyConomy &8| &7"
+
+enable-logging: true
+
+permissions:
+  README: >
+    IF YOU WANT THE PLUGIN TO USE PERMISSIONS,
+    WRITE THEM DOWN IN THE "".
+    EMPTY QUOTATION MARKS => BALANCE AND OTHERSBALANCE AND PAY FOR EVERYONE
+    AND MODIFY FOR OP ONLY
+  balance: ""
+  othersBalance: ""
+  pay: ""
+  modify: ""
+
+names:
+  currencyNamePlural: "Dollars"
+  currencyNameSingular: "Dollar"
+
+CONFIG_VERSION_NEVER_CHANGE_THIS: 1

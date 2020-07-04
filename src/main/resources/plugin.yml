@@ -1,0 +1,32 @@
+name: EasyConomy
+version: @version@
+main: dev.wwst.easyconomy.Easyconomy
+api-version: 1.13
+softdepend: [Vault]
+authors: [Weiiswurst]
+description: Easy economy management
+
+commands:
+  balance:
+    description: "Shows the balance of a player"
+    syntax: "/bal <player>"
+    aliases:
+      - bal
+      - money
+  eco:
+    description: "Manage the economy"
+    syntax: "/eco <give|take|set> <player> <amount>"
+    aliases:
+      - addmoney
+      - givemoney
+      - removemoney
+      - takemoney
+      - setbalance
+      - setmoney
+  pay:
+    description: "Pay someone money"
+    syntax: "/pay <target> <amount>"
+    aliases:
+      - paymoney
+      - transferbalance
+      - transferfunds

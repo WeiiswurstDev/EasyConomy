@@ -38,7 +38,7 @@ public class MessageTranslator {
 
         saveDefaults();
 
-        System.out.println(plugin.getConfigFolderPath());
+        // System.out.println(plugin.getConfigFolderPath()); // Ancient Debug Line
 
         File languageFile = new File("plugins/EasyConomy/messages_"+language+".yml");
         if(!languageFile.exists()) {

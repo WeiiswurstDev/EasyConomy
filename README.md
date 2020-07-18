@@ -11,3 +11,7 @@ EasyConomy is an economy plugin that integrates into Vault and focusses about a 
 ## Dependencies
 * A Bukkit/Spigot/Paper server
 * The [Vault Plugin](https://dev.bukkit.org/projects/vault) (Basically a bridge between plugins)
+* This Plugin uses [bstats](https://bstats.org/plugin/bukkit/EasyConomy/7962) for anonymous statistics. You can learn on how to opt-out at [bstats.org](https://bstats.org/)
+
+## Support
+You will be supported [on the discord server](https://discord.gg/YDkQbE7)

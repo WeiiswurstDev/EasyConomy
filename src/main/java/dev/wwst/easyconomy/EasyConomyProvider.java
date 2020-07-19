@@ -75,8 +75,8 @@ public class EasyConomyProvider implements Economy {
      */
     @Override
     public String format(double amount) {
-        if(amount != 1) return amount +" "+ currencyNamePlural();
-        else return amount + " "+currencyNameSingular();
+        if(amount != 1) return String.format(Configuration.get().getString("names.currencyFormatPlural"),amount);
+        else return String.format(Configuration.get().getString("names.currencyFormatSingular"),amount);
     }
 
     /**
@@ -120,7 +120,8 @@ public class EasyConomyProvider implements Economy {
      */
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return player.hasPlayedBefore();
+        //logger.info(pds.getConfig().isSet(player.getUniqueId().toString())+"");
+        return pds.getConfig().isSet(player.getUniqueId().toString());
     }
 
     /**
@@ -144,7 +145,7 @@ public class EasyConomyProvider implements Economy {
      */
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return pds.getPlayerData(player) != 0;
+        return hasAccount(player);
     }
 
     /**
@@ -257,9 +258,10 @@ public class EasyConomyProvider implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         double oldBalance = getBalance(player);
-        pds.write(player.getUniqueId().toString(),oldBalance-amount);
         if(logger != null)
             logger.info("[TRANSFER] "+player.getUniqueId()+" "+format(-amount));
+        pds.write(player.getUniqueId().toString(),oldBalance-amount);
+        //logger.info("New bal"+getBalance(player)+" old bal "+oldBalance);
         return new EconomyResponse(Math.abs(amount),oldBalance-amount,EconomyResponse.ResponseType.SUCCESS,"");
     }
 

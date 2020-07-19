@@ -7,7 +7,7 @@ enable-logging: true
 permissions:
   README: >
     IF YOU WANT THE PLUGIN TO USE PERMISSIONS,
-    WRITE THEM DOWN IN THE "".
+    WRITE THE PERMISSIONS DOWN IN THE "".
     EMPTY QUOTATION MARKS => BALANCE AND OTHERSBALANCE AND PAY FOR EVERYONE
     AND MODIFY FOR OP ONLY
   balance: ""
@@ -15,8 +15,14 @@ permissions:
   pay: ""
   modify: ""
 
+startingBalance: 0
+
+minimumTransactionAmount: 0.1
+
 names:
   currencyNamePlural: "Dollars"
   currencyNameSingular: "Dollar"
+  currencyFormatPlural: "%s Dollars"
+  currencyFormatSingular: "%s Dollar"
 
-CONFIG_VERSION_NEVER_CHANGE_THIS: 1
+CONFIG_VERSION_NEVER_CHANGE_THIS: 2

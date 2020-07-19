@@ -18,3 +18,4 @@ pay:
   you: "Du hast &6%s %s&7 bezahlt.. Du hast nun &6%s&7."
   target: "&6%s &7hat dir&6 %s&7 bezahlt. Du hast nun &6%s&7."
   self: "&cDu kannst dir nicht selbst Geld überweisen!"
+  amountTooSmall: "&cDer Betrag ist zu klein! Du musst mindestends &e%s &cüberweisen!"

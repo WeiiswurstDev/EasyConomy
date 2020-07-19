@@ -45,7 +45,7 @@ public class EcoCommand implements CommandExecutor {
                     return true;
                 }
             } else if(args.length != 2) {
-                sender.sendMessage(msg.getMessageAndReplace("general.syntax", true, "/" +label+ " <playerName> <amount>"));
+                sender.sendMessage(msg.getMessageAndReplace("general.syntax", true, "/givemoney|takemoney|setmoney <playerName> <amount>"));
                 return true;
             }
 
@@ -59,13 +59,13 @@ public class EcoCommand implements CommandExecutor {
 
     private boolean performOperation(CommandSender sender, String operation, String target, String amountStr) {
         final OfflinePlayer p = Bukkit.getOfflinePlayer(target);
-        if(!p.hasPlayedBefore() || !eco.hasAccount(p)) {
+        if(!p.isOnline() && !p.hasPlayedBefore()) {
             sender.sendMessage(msg.getMessageAndReplace("general.noAccount",true,target));
             return true;
         }
-        final int amount;
+        final double amount;
         try {
-            amount = Integer.parseInt(amountStr);
+            amount = Double.parseDouble(amountStr);
         } catch(NumberFormatException e) {
             sender.sendMessage(msg.getMessageAndReplace("general.notAnumber",true,amountStr));
             return true;

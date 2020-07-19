@@ -16,9 +16,12 @@ public class PayCommand implements CommandExecutor {
     private final Economy eco;
     private final MessageTranslator msg;
 
+    private final double minimumTransactionAmount;
+
     public PayCommand() {
         eco = Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
         msg = MessageTranslator.getInstance();
+        minimumTransactionAmount = Configuration.get().getDouble("minimumTransactionAmount",0.1d);
     }
 
     @Override
@@ -36,21 +39,25 @@ public class PayCommand implements CommandExecutor {
             sender.sendMessage(msg.getMessageAndReplace("general.syntax",true,"/pay <target> <amount>"));
             return true;
         }
-        int amount;
+        double amount;
         try {
-            amount = Integer.parseInt(args[1]);
+            amount = Double.parseDouble(args[1].replaceAll(",","."));
         } catch(NumberFormatException e) {
             sender.sendMessage(msg.getMessageAndReplace("general.notAnumber",true,args[1]));
             return true;
         }
         amount = Math.abs(amount);
-        Player p = (Player) sender;
-        if(!eco.has(p,amount)) {
-            sender.sendMessage(msg.getMessageAndReplace("general.insufficientFunds",true,eco.format(amount-eco.getBalance(p))));
+        if(amount < minimumTransactionAmount) {
+            sender.sendMessage(msg.getMessageAndReplace("pay.amountTooSmall",true,eco.format(minimumTransactionAmount)));
             return true;
         }
+        final Player p = (Player) sender;
         if(args[0].equalsIgnoreCase(p.getName())) {
             sender.sendMessage(msg.getMessage("pay.self",true));
+            return true;
+        }
+        if(!eco.has(p,amount)) {
+            sender.sendMessage(msg.getMessageAndReplace("general.insufficientFunds",true,eco.format(amount-eco.getBalance(p))));
             return true;
         }
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);

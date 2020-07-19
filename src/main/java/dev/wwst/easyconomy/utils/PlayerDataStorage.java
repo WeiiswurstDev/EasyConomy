@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,12 +69,9 @@ public class PlayerDataStorage {
         } catch (IOException e) { e.printStackTrace();}
     }
 
-    public void write(String path, Object object) {
-        if(customFile.contains(path)) {
-            customFile.set(path, object);
-        } else {
-            customFile.addDefault(path, object);
-        }
+    public void write(String path, double value) {
+        customFile.set(path, value);
+        Easyconomy.getInstance().getLogger().info("Write to "+path+": "+value+" and now saving. Value is "+customFile.getDouble(path));
         save();
     }
 

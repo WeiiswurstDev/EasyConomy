@@ -20,3 +20,4 @@ pay:
   you: "You paid &6%s %s&7. You know have &6%s&7."
   target: "&6%s &7paid you&6 %s&7. You know have &6%s&7."
   self: "&cYou can't pay yourself!"
+  amountTooSmall: "&cThe amount is too small! You must pay at least &e%s&c!"

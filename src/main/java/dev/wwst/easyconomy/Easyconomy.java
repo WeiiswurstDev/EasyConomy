@@ -3,10 +3,8 @@ package dev.wwst.easyconomy;
 import dev.wwst.easyconomy.commands.BalanceCommand;
 import dev.wwst.easyconomy.commands.EcoCommand;
 import dev.wwst.easyconomy.commands.PayCommand;
-import dev.wwst.easyconomy.utils.Configuration;
-import dev.wwst.easyconomy.utils.MessageTranslator;
-import dev.wwst.easyconomy.utils.Metrics;
-import dev.wwst.easyconomy.utils.PlayerDataStorage;
+import dev.wwst.easyconomy.events.JoinEvent;
+import dev.wwst.easyconomy.utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -41,7 +39,7 @@ public final class Easyconomy extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }
-
+        EasyConomyProvider eco = new EasyConomyProvider();
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
         if(rsp == null) {
             Bukkit.getServicesManager().register(Economy.class, new EasyConomyProvider(),this, ServicePriority.Normal);
@@ -56,7 +54,17 @@ public final class Easyconomy extends JavaPlugin {
         getCommand("eco").setExecutor(new EcoCommand());
         getCommand("pay").setExecutor(new PayCommand());
 
+        pm.registerEvents(new JoinEvent(eco),this);
+
         Metrics metrics = new Metrics(this, 7962);
+
+        new UpdateChecker(this, 81034).getVersion(version -> {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                getLogger().info("You are up to date!");
+            } else {
+                getLogger().warning("!!! There is a new update available! Download at https://www.spigotmc.org/resources/easyconomy.81034/ !!!");
+            }
+        });
     }
 
     @Override

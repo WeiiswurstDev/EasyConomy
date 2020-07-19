@@ -5,6 +5,7 @@ import dev.wwst.easyconomy.utils.PlayerDataStorage;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
@@ -16,12 +17,18 @@ public class EasyConomyProvider implements Economy {
     private final PlayerDataStorage pds;
     private final Logger logger;
 
+    private final String currencyFormatSingular,
+            currencyFormatPlural;
+
     public EasyConomyProvider() {
         pds = new PlayerDataStorage("balances.yml");
         if(Configuration.get().getBoolean("enable-logging",true))
             logger = Easyconomy.getInstance().getLogger();
         else
             logger = null;
+
+        currencyFormatSingular = ChatColor.translateAlternateColorCodes('&',Configuration.get().getString("names.currencyFormatSingular", "%s Dollar"));
+        currencyFormatPlural = ChatColor.translateAlternateColorCodes('&',Configuration.get().getString("names.currencyFormatPlural","%s Dollars"));
     }
 
     /**
@@ -75,8 +82,8 @@ public class EasyConomyProvider implements Economy {
      */
     @Override
     public String format(double amount) {
-        if(amount != 1) return String.format(Configuration.get().getString("names.currencyFormatPlural"),amount);
-        else return String.format(Configuration.get().getString("names.currencyFormatSingular"),amount);
+        if(amount != 1) return String.format(currencyFormatPlural,amount);
+        else return String.format(currencyFormatSingular,amount);
     }
 
     /**

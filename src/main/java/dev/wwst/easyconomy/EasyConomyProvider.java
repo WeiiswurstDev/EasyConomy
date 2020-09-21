@@ -8,10 +8,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * @author Weiiswurst
+ */
 public class EasyConomyProvider implements Economy {
 
     private final PlayerDataStorage pds;
@@ -82,6 +87,10 @@ public class EasyConomyProvider implements Economy {
      */
     @Override
     public String format(double amount) {
+        int decimalsShown = Configuration.get().getInt("decimalsShown");
+        if(decimalsShown >= 0) {
+            amount = new BigDecimal(amount).setScale(decimalsShown, RoundingMode.DOWN).doubleValue();
+        }
         if(amount != 1) return String.format(currencyFormatPlural,amount);
         else return String.format(currencyFormatSingular,amount);
     }
@@ -128,7 +137,7 @@ public class EasyConomyProvider implements Economy {
     @Override
     public boolean hasAccount(OfflinePlayer player) {
         //logger.info(pds.getConfig().isSet(player.getUniqueId().toString())+"");
-        return pds.getConfig().isSet(player.getUniqueId().toString());
+        return true;
     }
 
     /**
@@ -264,12 +273,15 @@ public class EasyConomyProvider implements Economy {
      */
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        double oldBalance = getBalance(player);
+        final double oldBalance = getBalance(player);
+        // BigDecimal for less approximations when dealing with doubles (due to how floating point values are handled in
+        // Java, there will always be approximations) ( https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html )
+        final double newBalance = BigDecimal.valueOf(oldBalance).subtract(BigDecimal.valueOf(amount)).doubleValue();
         if(logger != null)
             logger.info("[TRANSFER] "+player.getUniqueId()+" "+format(-amount));
-        pds.write(player.getUniqueId().toString(),oldBalance-amount);
+        pds.write(player.getUniqueId().toString(),newBalance);
         //logger.info("New bal"+getBalance(player)+" old bal "+oldBalance);
-        return new EconomyResponse(Math.abs(amount),oldBalance-amount,EconomyResponse.ResponseType.SUCCESS,"");
+        return new EconomyResponse(Math.abs(amount),newBalance,EconomyResponse.ResponseType.SUCCESS,"");
     }
 
     /**

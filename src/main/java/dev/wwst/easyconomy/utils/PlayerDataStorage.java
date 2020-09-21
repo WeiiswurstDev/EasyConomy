@@ -1,6 +1,7 @@
 package dev.wwst.easyconomy.utils;
 
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Doubles;
 import dev.wwst.easyconomy.Easyconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -13,12 +14,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
+/**
+ * @author Weiiswurst
+ */
 public class PlayerDataStorage {
 
-    private  File file;
+    private final File file;
     private FileConfiguration customFile;
 
-    private Easyconomy plugin;
+    private final Easyconomy plugin;
 
     /*
      ** Finds or generates the custom config file
@@ -48,7 +52,7 @@ public class PlayerDataStorage {
     }
 
     public double getPlayerData(OfflinePlayer p) {
-        return customFile.getDouble(p.getUniqueId().toString());
+        return Doubles.tryParse(customFile.getString(p.getUniqueId().toString(),"0.0"));
     }
 
     public List<UUID> getAllData() {
@@ -70,7 +74,7 @@ public class PlayerDataStorage {
     }
 
     public void write(String path, double value) {
-        customFile.set(path, value);
+        customFile.set(path, value+"");
         Easyconomy.getInstance().getLogger().info("Write to "+path+": "+value+" and now saving. Value is "+customFile.getDouble(path));
         save();
     }

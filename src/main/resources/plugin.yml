@@ -1,7 +1,7 @@
 name: EasyConomy
 version: @version@
 main: dev.wwst.easyconomy.Easyconomy
-api-version: 1.13
+api-version: "1.13"
 softdepend: [Vault]
 authors: [Weiiswurst]
 description: Easy economy management

@@ -1,3 +1,6 @@
+# You can change this value to "de" to get the German translations.
+# You can also create your own translations. Check the wiki for more info.
+# If you made a new translation, I would appreciate if you could share it with the community!
 language: en
 
 prefix: "&3EasyConomy &8| &7"
@@ -18,6 +21,8 @@ permissions:
 startingBalance: 0
 
 minimumTransactionAmount: 0.1
+# All decimals shown
+decimalsShown: -1
 
 names:
   currencyNamePlural: "Dollars"
@@ -25,4 +30,6 @@ names:
   currencyFormatPlural: "%s Dollars"
   currencyFormatSingular: "%s Dollar"
 
-CONFIG_VERSION_NEVER_CHANGE_THIS: 2
+# Do not change this value.
+# This value makes sure that the config always updates when the plugin updates.
+CONFIG_VERSION_NEVER_CHANGE_THIS: 3

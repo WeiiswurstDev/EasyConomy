@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * @author Weiiswurst
+ */
 public final class Easyconomy extends JavaPlugin {
 
     private final List<PlayerDataStorage> toSave = new ArrayList<>();

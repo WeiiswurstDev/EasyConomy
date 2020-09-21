@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+/**
+ * @author Weiiswurst
+ */
 public class MessageTranslator {
 
     private static final String[] translations = new String[] {

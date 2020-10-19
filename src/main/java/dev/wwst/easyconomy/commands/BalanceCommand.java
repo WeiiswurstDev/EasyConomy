@@ -42,6 +42,11 @@ public class BalanceCommand implements CommandExecutor {
         if(args.length == 0) {
             p.sendMessage(msg.getMessageAndReplace("balance.ofSelf",true,eco.format(eco.getBalance(p))));
         } else if(args.length == 1) {
+            String otherBalancePerm = Configuration.get().getString("permissions.othersBalance","");
+            if(!"".equals(otherBalancePerm) && !sender.hasPermission(otherBalancePerm)) {
+                sender.sendMessage(msg.getMessageAndReplace("general.noPerms",true,otherBalancePerm));
+                return true;
+            }
             sendBalanceOfOther(sender,args[0]);
         } else {
             sender.sendMessage(msg.getMessageAndReplace("general.syntax",true,"/bal <playerName>"));

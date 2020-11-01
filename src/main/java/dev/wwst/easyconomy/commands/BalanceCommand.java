@@ -10,6 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 @SuppressWarnings("deprecation")
 public class BalanceCommand implements CommandExecutor {
 
@@ -18,8 +20,8 @@ public class BalanceCommand implements CommandExecutor {
 
     public BalanceCommand() {
 
-        economy = Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
-        
+        economy = Objects.requireNonNull(Bukkit.getServicesManager().getRegistration(Economy.class)).getProvider();
+
         messageTranslator = MessageTranslator.getInstance();
 
     }
@@ -43,7 +45,7 @@ public class BalanceCommand implements CommandExecutor {
 
         String permission = Configuration.get().getString("permissions.balance","");
 
-        if(!"".equals(permission) && !sender.hasPermission(permission)) {
+        if(permission != null && !"".equals(permission) && !sender.hasPermission(permission)) {
 
             sender.sendMessage(messageTranslator.getMessageAndReplace("general.noPerms",true,permission));
 
@@ -59,7 +61,7 @@ public class BalanceCommand implements CommandExecutor {
         } else if(args.length == 1) {
             String otherBalancePerm = Configuration.get().getString("permissions.othersBalance","");
 
-            if(!"".equals(otherBalancePerm) && !sender.hasPermission(otherBalancePerm)) {
+            if(otherBalancePerm != null && !"".equals(otherBalancePerm) && !sender.hasPermission(otherBalancePerm)) {
 
                 sender.sendMessage(messageTranslator.getMessageAndReplace("general.noPerms",true,otherBalancePerm));
 

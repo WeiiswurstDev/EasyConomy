@@ -13,53 +13,82 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class BalanceCommand implements CommandExecutor {
 
-    private final Economy eco;
-    private final MessageTranslator msg;
+    private final Economy economy;
+    private final MessageTranslator messageTranslator;
 
     public BalanceCommand() {
-        eco = Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
-        msg = MessageTranslator.getInstance();
+
+        economy = Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
+        
+        messageTranslator = MessageTranslator.getInstance();
+
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if(!(sender instanceof Player)) {
+
             if(args.length != 1) {
-                sender.sendMessage(msg.getMessageAndReplace("general.syntax",true,"/bal <playerName>"));
+
+                sender.sendMessage(messageTranslator.getMessageAndReplace("general.syntax",true,"/bal <playerName>"));
+
                 return true;
             }
+
             sendBalanceOfOther(sender,args[0]);
+
             return true;
         }
 
         String permission = Configuration.get().getString("permissions.balance","");
+
         if(!"".equals(permission) && !sender.hasPermission(permission)) {
-            sender.sendMessage(msg.getMessageAndReplace("general.noPerms",true,permission));
+
+            sender.sendMessage(messageTranslator.getMessageAndReplace("general.noPerms",true,permission));
+
             return true;
         }
 
         Player p = (Player) sender;
+
         if(args.length == 0) {
-            p.sendMessage(msg.getMessageAndReplace("balance.ofSelf",true,eco.format(eco.getBalance(p))));
+
+            p.sendMessage(messageTranslator.getMessageAndReplace("balance.ofSelf",true, economy.format(economy.getBalance(p))));
+
         } else if(args.length == 1) {
             String otherBalancePerm = Configuration.get().getString("permissions.othersBalance","");
+
             if(!"".equals(otherBalancePerm) && !sender.hasPermission(otherBalancePerm)) {
-                sender.sendMessage(msg.getMessageAndReplace("general.noPerms",true,otherBalancePerm));
+
+                sender.sendMessage(messageTranslator.getMessageAndReplace("general.noPerms",true,otherBalancePerm));
+
                 return true;
             }
+
             sendBalanceOfOther(sender,args[0]);
+
         } else {
-            sender.sendMessage(msg.getMessageAndReplace("general.syntax",true,"/bal <playerName>"));
+
+            sender.sendMessage(messageTranslator.getMessageAndReplace("general.syntax",true,"/bal <playerName>"));
+
         }
+
         return true;
+
     }
 
     private void sendBalanceOfOther(CommandSender sender, String otherName) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(otherName);
-        if(!p.hasPlayedBefore() || !eco.hasAccount(p)) {
-            sender.sendMessage(msg.getMessageAndReplace("general.noAccount",true,otherName));
+
+        if(!p.hasPlayedBefore() || !economy.hasAccount(p)) {
+
+            sender.sendMessage(messageTranslator.getMessageAndReplace("general.noAccount",true,otherName));
+
         } else {
-            sender.sendMessage(msg.getMessageAndReplace("balance.ofOther", true, p.getName(), eco.format(eco.getBalance(p))));
+
+            sender.sendMessage(messageTranslator.getMessageAndReplace("balance.ofOther", true, p.getName(), economy.format(economy.getBalance(p))));
+
         }
     }
 }

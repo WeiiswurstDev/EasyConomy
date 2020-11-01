@@ -48,16 +48,16 @@ public class BalanceCommand implements CommandExecutor {
 
         if(permission != null && !"".equals(permission) && !sender.hasPermission(permission)) {
 
-            sender.sendMessage(messageTranslator.getMessageAndReplace("general.noPerms",true,permission));
+            sender.sendMessage(messageTranslator.getMessageAndReplace("general.noPerms",true, permission));
 
             return true;
         }
 
-        Player p = (Player) sender;
+        Player player = (Player) sender;
 
         if(args.length == 0) {
 
-            p.sendMessage(messageTranslator.getMessageAndReplace("balance.ofSelf",true, economy.format(economy.getBalance(p))));
+            player.sendMessage(messageTranslator.getMessageAndReplace("balance.ofSelf",true, economy.format(economy.getBalance(player))));
 
         } else if(args.length == 1) {
             String otherBalancePerm = Configuration.get().getString("permissions.othersBalance","");
@@ -82,15 +82,15 @@ public class BalanceCommand implements CommandExecutor {
     }
 
     private void sendBalanceOfOther(CommandSender sender, String otherName) {
-        OfflinePlayer p = Bukkit.getOfflinePlayer(otherName);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(otherName);
 
-        if(!p.hasPlayedBefore() || !economy.hasAccount(p)) {
+        if(!offlinePlayer.hasPlayedBefore() || !economy.hasAccount(offlinePlayer)) {
 
             sender.sendMessage(messageTranslator.getMessageAndReplace("general.noAccount",true,otherName));
 
         } else {
 
-            sender.sendMessage(messageTranslator.getMessageAndReplace("balance.ofOther", true, p.getName(), economy.format(economy.getBalance(p))));
+            sender.sendMessage(messageTranslator.getMessageAndReplace("balance.ofOther", true, offlinePlayer.getName(), economy.format(economy.getBalance(offlinePlayer))));
 
         }
     }

@@ -53,11 +53,10 @@ public class BalanceCommand implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
-
         if(args.length == 0) {
 
-            player.sendMessage(messageTranslator.getMessageAndReplace("balance.ofSelf",true, economy.format(economy.getBalance(player))));
+            if (sender instanceof Player)
+                sender.sendMessage(messageTranslator.getMessageAndReplace("balance.ofSelf",true, economy.format(economy.getBalance((Player) sender))));
 
         } else if(args.length == 1) {
             String otherBalancePerm = Configuration.get().getString("permissions.othersBalance","");

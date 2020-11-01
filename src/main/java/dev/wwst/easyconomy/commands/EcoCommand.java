@@ -27,7 +27,7 @@ public class EcoCommand implements CommandExecutor {
         label = label.toLowerCase();
         if(label.equals("eco") && args.length == 0) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&aEasyConomy by Weiiswurst#0016 Version "+ Easyconomy.getInstance().getDescription().getVersion()));
+                    "&aEasyConomy by Weiiswurst#0016 and TheFruxz Version "+ Easyconomy.getInstance().getDescription().getVersion()));
             return true;
         } else {
             String permission = Configuration.get().getString("permissions.modify","");

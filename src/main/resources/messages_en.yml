@@ -21,3 +21,8 @@ pay:
   target: "&6%s &7paid you&6 %s&7. You know have &6%s&7."
   self: "&cYou can't pay yourself!"
   amountTooSmall: "&cThe amount is too small! You must pay at least &e%s&c!"
+
+baltop:
+  start: "&aPlayers with the highest balances:"
+  value: "&7[&a%s&7] &b%s"
+  none: "&7There are no balances to show here or this command was disabled in the config."

@@ -7,6 +7,8 @@ prefix: "&3EasyConomy &8| &7"
 
 enable-logging: true
 
+update-checker: true
+
 permissions:
   README: >
     IF YOU WANT THE PLUGIN TO USE PERMISSIONS,
@@ -17,12 +19,16 @@ permissions:
   othersBalance: ""
   pay: ""
   modify: ""
+  baltop: ""
 
 startingBalance: 0
 
 minimumTransactionAmount: 0.1
 # All decimals shown
 decimalsShown: -1
+
+# Set to -1 to disable baltop.
+baltopPlayers: 10
 
 names:
   currencyNamePlural: "Dollars"
@@ -32,4 +38,4 @@ names:
 
 # Do not change this value.
 # This value makes sure that the config always updates when the plugin updates.
-CONFIG_VERSION_NEVER_CHANGE_THIS: 3
+CONFIG_VERSION_NEVER_CHANGE_THIS: 4

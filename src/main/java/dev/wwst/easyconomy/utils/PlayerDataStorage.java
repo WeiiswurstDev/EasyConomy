@@ -10,9 +10,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * @author Weiiswurst
@@ -24,10 +28,13 @@ public class PlayerDataStorage {
 
     private final Easyconomy plugin;
 
-    /*
+    private Map<UUID, Double> balTop;
+    private double smallestBalTop = Double.MAX_VALUE;
+
+    /**
      ** Finds or generates the custom config file
      */
-    public PlayerDataStorage(String path){
+    public PlayerDataStorage(String path, int baltopLength){
         plugin = (Easyconomy) Bukkit.getServer().getPluginManager().getPlugin(Easyconomy.PLUGIN_NAME);
         plugin.getLogger().log(Level.INFO, "Loading Storage: "+path);
 
@@ -45,6 +52,18 @@ public class PlayerDataStorage {
         }
         customFile = YamlConfiguration.loadConfiguration(file);
         plugin.addDataStorage(this);
+
+        if(baltopLength > 0) {
+            plugin.getLogger().info("Calculating top balances... (if you have thousands of accounts, this could take a few seconds)");
+            Map<UUID, Double> notSorted = new HashMap<>();
+            for(String key : customFile.getKeys(false)) {
+                notSorted.put(UUID.fromString(key), Doubles.tryParse(customFile.getString(key)));
+            }
+            recalcBaltop(notSorted, baltopLength);
+            plugin.getLogger().info(balTop.size()+" balances are now in the baltop.");
+        } else {
+            balTop = null;
+        }
     }
 
     public FileConfiguration getConfig(){
@@ -53,6 +72,10 @@ public class PlayerDataStorage {
 
     public double getPlayerData(OfflinePlayer p) {
         return Doubles.tryParse(customFile.getString(p.getUniqueId().toString(),"0.0"));
+    }
+
+    public double getPlayerData(UUID player) {
+        return Doubles.tryParse(customFile.getString(player.toString(),"0.0"));
     }
 
     public List<UUID> getAllData() {
@@ -75,12 +98,34 @@ public class PlayerDataStorage {
 
     public void write(String path, double value) {
         customFile.set(path, value+"");
-        Easyconomy.getInstance().getLogger().info("Write to "+path+": "+value+" and now saving. Value is "+customFile.getDouble(path));
+        if(value > smallestBalTop) {
+            System.out.println("Recalculating top balances (If you have a lot of accounts, this should happen very rarely)");
+            balTop.put(UUID.fromString(path), value);
+            recalcBaltop(balTop, Configuration.get().getInt("baltopPlayers"));
+        }
+        Easyconomy.getInstance().getLogger().info("Write to "+path+": "+value+" and now saving. Value is "+customFile.get(path));
         save();
     }
 
     public void reload() {
         customFile = YamlConfiguration.loadConfiguration(file);
+    }
+
+    private void recalcBaltop(Map<UUID, Double> notSorted, int baltopLength) {
+        AtomicInteger length = new AtomicInteger();
+        balTop = notSorted.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .filter((predicate) -> length.incrementAndGet() < baltopLength)
+                .peek(val->{
+                    if(val.getValue() < smallestBalTop) smallestBalTop = val.getValue();})
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, HashMap::new));
+        if(balTop.size() < baltopLength) {
+            smallestBalTop = Double.MIN_VALUE;
+        }
+    }
+
+    public Map<UUID, Double> getBaltop() {
+        return balTop;
     }
 
 }

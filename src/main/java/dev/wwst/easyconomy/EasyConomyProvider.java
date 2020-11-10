@@ -26,7 +26,7 @@ public class EasyConomyProvider implements Economy {
             currencyFormatPlural;
 
     public EasyConomyProvider() {
-        pds = new PlayerDataStorage("balances.yml");
+        pds = new PlayerDataStorage("balances.yml", Configuration.get().getInt("baltopPlayers"));
         if(Configuration.get().getBoolean("enable-logging",true))
             logger = Easyconomy.getInstance().getLogger();
         else
@@ -34,6 +34,10 @@ public class EasyConomyProvider implements Economy {
 
         currencyFormatSingular = ChatColor.translateAlternateColorCodes('&',Configuration.get().getString("names.currencyFormatSingular", "%s Dollar"));
         currencyFormatPlural = ChatColor.translateAlternateColorCodes('&',Configuration.get().getString("names.currencyFormatPlural","%s Dollars"));
+    }
+
+    public PlayerDataStorage getStorage() {
+        return pds;
     }
 
     /**

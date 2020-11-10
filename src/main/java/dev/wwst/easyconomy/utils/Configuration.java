@@ -43,7 +43,6 @@ public class Configuration {
             plugin.getLogger().log(Level.WARNING, "!!! STOP THE SERVER TO CHANGE VALUES IN THE NEW config.yml !!!");
             customFile = YamlConfiguration.loadConfiguration(file);
         }
-        plugin.getLogger().log(Level.INFO, "Done");
     }
 
     public static FileConfiguration get(){

@@ -30,3 +30,10 @@ commands:
       - paymoney
       - transferbalance
       - transferfunds
+  baltop:
+    description: "Shows the players with the highest balance"
+    syntax: "/baltop"
+    aliases:
+      - balancetop
+      - topbal
+      - topbalance

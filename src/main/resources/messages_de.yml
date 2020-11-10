@@ -19,3 +19,8 @@ pay:
   target: "&6%s &7hat dir&6 %s&7 bezahlt. Du hast nun &6%s&7."
   self: "&cDu kannst dir nicht selbst Geld überweisen!"
   amountTooSmall: "&cDer Betrag ist zu klein! Du musst mindestends &e%s &cüberweisen!"
+
+baltop:
+  start: "&aSpieler mit dem meisten Geld:"
+  value: "&7[&a%s&7] &b%s"
+  none: "&7Niemand hat ein Konto oder dieser Befehl wurde in der config.yml ausgeschaltet."

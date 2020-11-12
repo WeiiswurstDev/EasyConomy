@@ -42,8 +42,12 @@ public class BaltopCommand implements CommandExecutor {
         StringBuilder message = new StringBuilder(msg.getMessage("baltop.start",true));
         message.append("\n"); // newline
         for(Map.Entry<UUID, Double> entry : pds.getBaltop().entrySet()) {
-            message.append(msg.getMessageAndReplace("baltop.value", false, eco.format(entry.getValue()), Bukkit.getOfflinePlayer(entry.getKey()).getName()));
-            message.append("\n");
+            if(Bukkit.getOfflinePlayer(entry.getKey()).getName() == null) {
+                message.append("Invalid entry: ").append(entry.getKey().toString());
+            } else {
+                message.append(msg.getMessageAndReplace("baltop.value", false, eco.format(entry.getValue()), Bukkit.getOfflinePlayer(entry.getKey()).getName()));
+                message.append("\n");
+            }
         }
 
         sender.sendMessage(message.toString());

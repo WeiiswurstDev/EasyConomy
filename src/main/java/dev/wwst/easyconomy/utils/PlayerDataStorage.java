@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -112,12 +111,11 @@ public class PlayerDataStorage {
     }
 
     private void recalcBaltop(Map<UUID, Double> notSorted, int baltopLength) {
-        AtomicInteger length = new AtomicInteger();
         balTop = notSorted.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
-                .filter((predicate) -> length.incrementAndGet() < baltopLength)
+                .sorted((c1, c2) -> -c1.getValue().compareTo(c2.getValue()))
                 .peek(val->{
                     if(val.getValue() < smallestBalTop) smallestBalTop = val.getValue();})
+                .limit(baltopLength)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, HashMap::new));
         if(balTop.size() < baltopLength) {
             smallestBalTop = Double.MIN_VALUE;

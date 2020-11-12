@@ -1,9 +1,9 @@
 package dev.wwst.easyconomy.commands;
 
 import dev.wwst.easyconomy.Easyconomy;
+import dev.wwst.easyconomy.storage.PlayerDataStorage;
 import dev.wwst.easyconomy.utils.Configuration;
 import dev.wwst.easyconomy.utils.MessageTranslator;
-import dev.wwst.easyconomy.utils.PlayerDataStorage;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

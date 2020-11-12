@@ -1,12 +1,13 @@
 package dev.wwst.easyconomy;
 
+import dev.wwst.easyconomy.storage.*;
 import dev.wwst.easyconomy.utils.Configuration;
-import dev.wwst.easyconomy.utils.PlayerDataStorage;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,14 +27,19 @@ public class EasyConomyProvider implements Economy {
             currencyFormatPlural;
 
     public EasyConomyProvider() {
-        pds = new PlayerDataStorage("balances.yml", Configuration.get().getInt("baltopPlayers"));
+        FileConfiguration config = Configuration.get();
+        if(config.getBoolean("use-binary", false))
+            pds = new BinaryDataStorage(config.getString("storage-location", "balances.dat"), config.getInt("baltopPlayers"));
+        else
+            pds = new YamlDataStorage(config.getString("storage-location", "balances.yml"), config.getInt("baltopPlayers"));
+
         if(Configuration.get().getBoolean("enable-logging",true))
             logger = Easyconomy.getInstance().getLogger();
         else
             logger = null;
 
-        currencyFormatSingular = ChatColor.translateAlternateColorCodes('&',Configuration.get().getString("names.currencyFormatSingular", "%s Dollar"));
-        currencyFormatPlural = ChatColor.translateAlternateColorCodes('&',Configuration.get().getString("names.currencyFormatPlural","%s Dollars"));
+        currencyFormatSingular = ChatColor.translateAlternateColorCodes('&',config.getString("names.currencyFormatSingular", "%s Dollar"));
+        currencyFormatPlural = ChatColor.translateAlternateColorCodes('&',config.getString("names.currencyFormatPlural","%s Dollars"));
     }
 
     public PlayerDataStorage getStorage() {
@@ -283,7 +289,7 @@ public class EasyConomyProvider implements Economy {
         final double newBalance = BigDecimal.valueOf(oldBalance).subtract(BigDecimal.valueOf(amount)).doubleValue();
         if(logger != null)
             logger.info("[TRANSFER] "+player.getUniqueId()+" "+format(-amount));
-        pds.write(player.getUniqueId().toString(),newBalance);
+        pds.write(player.getUniqueId(), newBalance);
         //logger.info("New bal"+getBalance(player)+" old bal "+oldBalance);
         return new EconomyResponse(Math.abs(amount),newBalance,EconomyResponse.ResponseType.SUCCESS,"");
     }

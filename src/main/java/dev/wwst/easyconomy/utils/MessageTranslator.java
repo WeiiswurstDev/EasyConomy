@@ -89,7 +89,7 @@ public class MessageTranslator {
         }
         String message = messages.get(key);
         for(int i = 0; message.contains("%s") && replacements != null; i++) {
-            if(replacements.length <= i) {
+            if(replacements.length <= i || replacements[i] == null) {
                 message = message.replaceFirst("%s", "&cNO REPLACEMENT");
             } else {
                 message = message.replaceFirst("%s", replacements[i]);

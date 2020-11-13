@@ -83,21 +83,11 @@ public class MessageTranslator {
         }
     }
 
-    public String getMessageAndReplace(String key, boolean addPrefix, String... replacements) {
+    public String getMessageAndReplace(String key, boolean addPrefix, Object... replacements) {
         if(!messages.containsKey(key)) {
             return ChatColor.YELLOW+key+ ChatColor.RED +" not found!";
         }
-        String message = messages.get(key);
-        for(int i = 0; message.contains("%s") && replacements != null; i++) {
-            if(replacements.length <= i || replacements[i] == null) {
-                message = message.replaceFirst("%s", "&cNO REPLACEMENT");
-            } else {
-                message = message.replaceFirst("%s", replacements[i]);
-            }
-        }
-        if(addPrefix) {
-            message = prefix + message;
-        }
+        String message = (addPrefix ? prefix : "") + String.format(messages.get(key), replacements);
 
         return ChatColor.translateAlternateColorCodes('&', message);
     }

@@ -3,7 +3,7 @@ EasyConomy is an economy plugin that integrates into Vault and focusses about a 
 
 ## Features
 * Easy setup (Drag plugin in and reload)
-* Easy To Use (/money, /eco give/take/set, /pay AND THAT'S IT)
+* Easy To Use (/money, /eco give/take/set, /pay, /baltop AND THAT'S IT)
 * Perfect for first-time users
 * All messages customizable
 * All settings customizable
@@ -15,3 +15,9 @@ EasyConomy is an economy plugin that integrates into Vault and focusses about a 
 
 ## Support
 You will be supported [on the discord server](https://discord.gg/YDkQbE7)
+
+## Links
+* **Documentation:** [English Wiki](https://weiiswurst.gitbook.io/easyconomy/) [German Wiki](https://weiiswurst.gitbook.io/easyconomy/v/de/)
+* **Recommended Download:** [Polymart](https://polymart.org/resource/easyconomy.475)
+* [SpigotMC](https://www.spigotmc.org/resources/easyconomy.81034/)
+* [BukkitDev](https://dev.bukkit.org/projects/easyconomy-recode/)

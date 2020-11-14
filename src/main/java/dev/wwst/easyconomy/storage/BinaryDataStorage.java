@@ -106,7 +106,7 @@ public class BinaryDataStorage implements PlayerDataStorage {
                         .putDouble(entry.getValue())
                         .array());
             }
-            Easyconomy.getInstance().getLogger().info(
+            plugin.getLogger().info(
                     "Storage file " + file.getName() + " saved within " + (System.currentTimeMillis() - time) + "ms.");
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,8 +122,7 @@ public class BinaryDataStorage implements PlayerDataStorage {
             balTop.put(account, balance);
             recalcBaltop(balTop, Configuration.get().getInt("baltopPlayers"));
         }
-        Easyconomy.getInstance().getLogger()
-                .info("Write to " + account.toString() + ": " + balance + " and now saving.");
+        plugin.getLogger().info("Write to " + account.toString() + ": " + balance + " and now saving.");
         save();
     }
 
@@ -150,20 +149,23 @@ public class BinaryDataStorage implements PlayerDataStorage {
         long time = System.currentTimeMillis();
         try (FileInputStream fileIn = new FileInputStream(file)) {
             if (fileIn.read() != 1) {
-                Easyconomy.getInstance().getLogger().warning("Storage file " + file.getName() + " has an invalid version."
+                plugin.getLogger().warning("Storage file " + file.getName() + " has an invalid version."
                         + " Reading it anyway.");
             }
             ByteBuffer buff = ByteBuffer.wrap(streamReadAllBytes(fileIn));
             if (buff.array().length % 24 != 0) {
-                Easyconomy.getInstance().getLogger().severe("Storage file " + file.getName() + " has an invalid length."
-                        + " It's probably corrupted and the server will be disabled to prevent damage.");
-                Bukkit.shutdown();
+                plugin.getLogger().severe("Storage file " + file.getName() + " has an invalid length."
+                        + " It's probably corrupted and the plugin will be disabled to prevent damage.");
+                Bukkit.getPluginManager().disablePlugin(plugin);
+                // This forces the plugin to terminate and not to proceed any further, also showing a nice red wall
+                // of text so the sysadmin is aware of the crash.
+                throw new IOException("Unexpected file size. Possible corruption detected");
             }
             balances.clear();
             while (buff.hasRemaining()) {
                 balances.put(new UUID(buff.getLong(), buff.getLong()), buff.getDouble());
             }
-            Easyconomy.getInstance().getLogger().info(
+            plugin.getLogger().info(
                     "Storage file " + file.getName() + " loaded within " + (System.currentTimeMillis() - time) + "ms.");
         } catch (IOException e) {
             e.printStackTrace();

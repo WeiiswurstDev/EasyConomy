@@ -33,7 +33,7 @@ public class EasyConomyProvider implements Economy {
         else
             pds = new YamlDataStorage(config.getString("storage-location", "balances.yml"), config.getInt("baltopPlayers"));
 
-        if(Configuration.get().getBoolean("enable-logging",true))
+        if(config.getBoolean("enable-logging",true))
             logger = Easyconomy.getInstance().getLogger();
         else
             logger = null;

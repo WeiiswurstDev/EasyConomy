@@ -16,7 +16,8 @@ public class MessageTranslator {
 
     private static final String[] translations = new String[] {
             "de",
-            "en"
+            "en",
+            "fr",
     };
 
     private static MessageTranslator INSTANCE;

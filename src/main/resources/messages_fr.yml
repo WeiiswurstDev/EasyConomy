@@ -1,0 +1,28 @@
+# French translation: Sonyk#4826 <3
+
+general:
+  insufficientFunds: "&cFonds insuffisants ! Vous avez besoin de &e%s &cpour pouvoir payer !"
+  notAnumber: "&e%s &cN'est pas un nombre ou n'est pas plus petit/plus grand que 2 milliards ! Merci d'utiliser un nombre comme 10 ou 15.22"
+  syntax: "&cSyntaxe: &e%s"
+  noPerms: "&cVous n'avez pas la permission: &e%s"
+  playerOnly: "&cCette commande ne peut être exécutée que par un joueur."
+  noAccount: "&e%s &cNe s'est jamais connecté sur le serveur !"
+
+balance:
+  ofOther: "Solde de &6%s&7: &6%s"
+  ofSelf: "Solde: &6%s"
+
+eco:
+  helpMessage: "Commandes disponibles: &a/eco, /eco give|take|set <joueur> <quantité>, /bal [joueur], /pay <joueur> <quantité>"
+  success: "Vous avez changé le solde de %s par %s. Il a maintenant : %s"
+
+pay:
+  you: "Vous avez payé &6%s %s&7. Vous avez maintenant &6%s&7."
+  target: "&6%s &7Vous a payé&6 %s&7. Vous avez maintenant &6%s&7."
+  self: "&cVous ne pouvez pas vous payer vous même !"
+  amountTooSmall: "&cLa quantité est trop faible ! Vous devez payer au moins &e%s&c!"
+
+baltop:
+  start: "&aJoueurs qui ont le plus gros solde :"
+  value: "&7[&a%s&7] &b%s"
+  none: "&7Il n'y a pas de soldes à afficher ou la commande est désactivée dans la config."

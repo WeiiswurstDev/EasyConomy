@@ -1,8 +1,8 @@
 package dev.wwst.easyconomy.events;
 
 import dev.wwst.easyconomy.Easyconomy;
+import dev.wwst.easyconomy.storage.PlayerDataStorage;
 import dev.wwst.easyconomy.utils.Configuration;
-import dev.wwst.easyconomy.utils.PlayerDataStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,7 +20,7 @@ public class JoinEvent implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
         Bukkit.getScheduler().runTaskLater(Easyconomy.getInstance(), () -> {
-            if(!pds.getConfig().isSet(e.getPlayer().getUniqueId().toString())) {
+            if(!pds.has(e.getPlayer().getUniqueId())) {
                 final String cmd = "eco give "+e.getPlayer().getName()+" "+Configuration.get().getInt("startingBalance");
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),cmd);
             }

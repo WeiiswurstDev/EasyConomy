@@ -1,8 +1,10 @@
-package dev.wwst.easyconomy.utils;
+package dev.wwst.easyconomy.storage;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import dev.wwst.easyconomy.Easyconomy;
+import dev.wwst.easyconomy.utils.Configuration;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * @author Weiiswurst
  */
-public class PlayerDataStorage {
+public class YamlDataStorage implements PlayerDataStorage {
 
     private final File file;
     private FileConfiguration customFile;
@@ -33,9 +35,10 @@ public class PlayerDataStorage {
     /**
      ** Finds or generates the custom config file
      */
-    public PlayerDataStorage(String path, int baltopLength){
+    public YamlDataStorage(String path, int baltopLength){
         plugin = (Easyconomy) Bukkit.getServer().getPluginManager().getPlugin(Easyconomy.PLUGIN_NAME);
         plugin.getLogger().log(Level.INFO, "Loading Storage: "+path);
+        long timestamp = System.currentTimeMillis();
 
         File storageFolder = new File(plugin.getDataFolder()+"/storage");
         if(!storageFolder.exists()) storageFolder.mkdirs();
@@ -63,20 +66,25 @@ public class PlayerDataStorage {
         } else {
             balTop = null;
         }
+        timestamp = System.currentTimeMillis() - timestamp;
+        plugin.getLogger().log(Level.INFO, "Loaded Storage: " + path + " within " + timestamp + "ms");
     }
 
     public FileConfiguration getConfig(){
         return customFile;
     }
 
+    @Override
     public double getPlayerData(OfflinePlayer p) {
         return Doubles.tryParse(customFile.getString(p.getUniqueId().toString(),"0.0"));
     }
 
+    @Override
     public double getPlayerData(UUID player) {
         return Doubles.tryParse(customFile.getString(player.toString(),"0.0"));
     }
 
+    @Override
     public List<UUID> getAllData() {
         List<UUID> toReturn = Lists.newArrayList();
         for(String key : customFile.getKeys(false)) {
@@ -87,27 +95,36 @@ public class PlayerDataStorage {
     /*
      ** Saves the current FileConfiguration to the file on the disk
      */
+    @Override
     public void save() {
+        long time = System.currentTimeMillis();
         Configuration.get().options().copyDefaults(true);
         try {
             customFile.save(file);
-            Easyconomy.getInstance().getLogger().log(Level.INFO, "Storage file "+file.getName()+" saved.");
+            Easyconomy.getInstance().getLogger().info(
+                    "Storage file " + file.getName() + " saved within " + (System.currentTimeMillis() - time) + "ms.");
         } catch (IOException e) { e.printStackTrace();}
     }
 
-    public void write(String path, double value) {
-        customFile.set(path, value+"");
+    @Override
+    public void write(UUID key, double value) {
+        customFile.set(key.toString(), value+"");
         if(value > smallestBalTop) {
             System.out.println("Recalculating top balances (If you have a lot of accounts, this should happen very rarely)");
-            balTop.put(UUID.fromString(path), value);
+            balTop.put(key, value);
             recalcBaltop(balTop, Configuration.get().getInt("baltopPlayers"));
         }
-        Easyconomy.getInstance().getLogger().info("Write to "+path+": "+value+" and now saving. Value is "+customFile.get(path));
+        Easyconomy.getInstance().getLogger().info("Write to "+key.toString()+
+                ": "+value+" and now saving. Value is "+customFile.get(key.toString()));
         save();
     }
 
+    @Override
     public void reload() {
+        long time = System.currentTimeMillis();
         customFile = YamlConfiguration.loadConfiguration(file);
+        Easyconomy.getInstance().getLogger().info(
+                "Storage file " + file.getName() + " loaded within " + (System.currentTimeMillis() - time) + "ms.");
     }
 
     private void recalcBaltop(Map<UUID, Double> notSorted, int baltopLength) {
@@ -122,8 +139,13 @@ public class PlayerDataStorage {
         }
     }
 
+    @Override
     public Map<UUID, Double> getBaltop() {
         return balTop;
     }
 
+    @Override
+    public boolean has(UUID key) {
+        return getConfig().isSet(key.toString());
+    }
 }

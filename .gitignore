@@ -10,6 +10,12 @@ out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
+# Eclipse
+/.classpath
+/.project
+*.prefs
+
+
 # JIRA plugin
 atlassian-ide-plugin.xml
 
@@ -110,6 +116,7 @@ gradle-app.setting
 .gradletasknamecache
 
 **/build/
+/bin/
 
 # Common working directory
 run/

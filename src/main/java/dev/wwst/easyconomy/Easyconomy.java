@@ -5,6 +5,7 @@ import dev.wwst.easyconomy.commands.BaltopCommand;
 import dev.wwst.easyconomy.commands.EcoCommand;
 import dev.wwst.easyconomy.commands.PayCommand;
 import dev.wwst.easyconomy.events.JoinEvent;
+import dev.wwst.easyconomy.storage.PlayerDataStorage;
 import dev.wwst.easyconomy.utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

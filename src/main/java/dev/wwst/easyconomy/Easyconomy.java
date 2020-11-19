@@ -30,16 +30,14 @@ public final class Easyconomy extends JavaPlugin {
 
     public static final String PLUGIN_NAME = "EasyConomy";
 
+    private boolean isLoaded = false;
+
     @Override
-    public void onEnable() {
-        INSTANCE = this;
-        getDataFolder().mkdirs();
-        Configuration.setup();
-        new MessageTranslator(Configuration.get().getString("language"));
-
+    public void onLoad() {
         PluginManager pm = Bukkit.getPluginManager();
-
-        if(!pm.isPluginEnabled("Vault")) {
+        try {
+            Class.forName("net.milkbowl.vault.economy.Economy");
+        } catch (ClassNotFoundException expected) {
             getLogger().severe("!!! VAULT IS NOT INSTALLED !!!");
             getLogger().severe("!!! THE VAULT PLUGIN IS NEEDED FOR THIS PLUGIN !!!");
             pm.disablePlugin(this);
@@ -55,6 +53,20 @@ public final class Easyconomy extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }
+        isLoaded = true;
+    }
+
+    @Override
+    public void onEnable() {
+        if (!isLoaded) {
+            return;
+        }
+        INSTANCE = this;
+        getDataFolder().mkdirs();
+        Configuration.setup();
+        new MessageTranslator(Configuration.get().getString("language"));
+
+        PluginManager pm = Bukkit.getPluginManager();
 
         getCommand("balance").setExecutor(new BalanceCommand());
         getCommand("eco").setExecutor(new EcoCommand());
@@ -78,6 +90,9 @@ public final class Easyconomy extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (!isLoaded) {
+            return;
+        }
         for(PlayerDataStorage pds : toSave) {
             pds.save();
         }

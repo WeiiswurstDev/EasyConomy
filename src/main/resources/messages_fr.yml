@@ -13,7 +13,7 @@ balance:
   ofSelf: "Solde: &6%s"
 
 eco:
-  helpMessage: "Commandes disponibles: &a/eco, /eco give|take|set <joueur> <quantité>, /bal [joueur], /pay <joueur> <quantité>"
+  helpMessage: "Commandes disponibles: &a/eco, /eco backup, /eco give|take|set <joueur> <quantité>, /bal [joueur], /pay <joueur> <quantité>, /baltop"
   success: "Vous avez changé le solde de %s par %s. Il a maintenant : %s"
 
 pay:
@@ -26,3 +26,8 @@ baltop:
   start: "&aJoueurs qui ont le plus gros solde :"
   value: "&7[&a%s&7] &b%s"
   none: "&7Il n'y a pas de soldes à afficher ou la commande est désactivée dans la config."
+
+backup:
+  starting: "&7Création d'une sauvegarde, attendez svp.."
+  error: "&cIl y a eu une erreur durant la création de la sauvegarde !"
+  finished: "&Sauvegarde effectuée !"

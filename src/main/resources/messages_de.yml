@@ -13,7 +13,7 @@ balance:
   ofSelf: "Kontostand: &6%s"
 
 eco:
-  helpMessage: "Befehle: &a/eco, /eco give|take|set <player> <amount>, /bal [player], /pay <player> <amount>"
+  helpMessage: "Befehle: &a/eco, /eco backup, /eco give|take|set <player> <amount>, /bal [player], /pay <player> <amount>, /baltop"
   success: "Du hast den Kontostand von %s um %s verändert. Er hat nun %s"
 
 pay:
@@ -26,3 +26,8 @@ baltop:
   start: "&aSpieler mit dem meisten Geld:"
   value: "&7[&a%s&7] &b%s"
   none: "&7Niemand hat ein Konto oder dieser Befehl wurde in der config.yml ausgeschaltet."
+
+backup:
+  starting: "&7Erstelle Backup, das kann einen Moment dauern"
+  error: "&cBeim Erstellen des Backups ist ein Fehler aufgetreten."
+  finished: "&aFertig!"

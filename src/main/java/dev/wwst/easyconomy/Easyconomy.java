@@ -6,7 +6,10 @@ import dev.wwst.easyconomy.commands.EcoCommand;
 import dev.wwst.easyconomy.commands.PayCommand;
 import dev.wwst.easyconomy.events.JoinEvent;
 import dev.wwst.easyconomy.storage.PlayerDataStorage;
-import dev.wwst.easyconomy.utils.*;
+import dev.wwst.easyconomy.utils.Configuration;
+import dev.wwst.easyconomy.utils.MessageTranslator;
+import dev.wwst.easyconomy.utils.Metrics;
+import dev.wwst.easyconomy.utils.UpdateChecker;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -35,6 +38,7 @@ public final class Easyconomy extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        INSTANCE = this;
         PluginManager pm = Bukkit.getPluginManager();
         try {
             Class.forName("net.milkbowl.vault.economy.Economy");
@@ -44,6 +48,7 @@ public final class Easyconomy extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }
+        Configuration.setup();
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
         if(rsp == null) {
             ecp = new EasyConomyProvider();
@@ -62,15 +67,13 @@ public final class Easyconomy extends JavaPlugin {
         if (!isLoaded) {
             return;
         }
-        INSTANCE = this;
         getDataFolder().mkdirs();
-        Configuration.setup();
         new MessageTranslator(Configuration.get().getString("language"));
 
         PluginManager pm = Bukkit.getPluginManager();
 
         getCommand("balance").setExecutor(new BalanceCommand());
-        getCommand("eco").setExecutor(new EcoCommand());
+        getCommand("eco").setExecutor(new EcoCommand(ecp));
         getCommand("pay").setExecutor(new PayCommand());
         getCommand("baltop").setExecutor(new BaltopCommand());
 

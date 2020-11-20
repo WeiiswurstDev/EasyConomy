@@ -1,25 +1,15 @@
 package dev.wwst.easyconomy.storage;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
+import dev.wwst.easyconomy.Easyconomy;
+import dev.wwst.easyconomy.utils.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import dev.wwst.easyconomy.Easyconomy;
-import dev.wwst.easyconomy.utils.Configuration;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * An implementation of the PlayerDataStoarge that directly stores data in binary form.
@@ -192,5 +182,10 @@ public class BinaryDataStorage implements PlayerDataStorage {
     @Override
     public boolean has(UUID key) {
         return balances.containsKey(key);
+    }
+
+    @Override
+    public File getStorageFile() {
+        return file;
     }
 }

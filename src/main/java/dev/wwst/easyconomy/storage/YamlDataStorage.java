@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import dev.wwst.easyconomy.Easyconomy;
 import dev.wwst.easyconomy.utils.Configuration;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -147,5 +146,10 @@ public class YamlDataStorage implements PlayerDataStorage {
     @Override
     public boolean has(UUID key) {
         return getConfig().isSet(key.toString());
+    }
+
+    @Override
+    public File getStorageFile() {
+        return file;
     }
 }

@@ -1,9 +1,9 @@
 package dev.wwst.easyconomy.commands;
 
-import dev.wwst.easyconomy.Easyconomy;
+import com.google.common.io.Files;
+import dev.wwst.easyconomy.EasyConomyProvider;
 import dev.wwst.easyconomy.utils.Configuration;
 import dev.wwst.easyconomy.utils.MessageTranslator;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,13 +12,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EcoCommand implements CommandExecutor {
 
-    private final Economy eco;
+    private final EasyConomyProvider eco;
     private final MessageTranslator msg;
 
-    public EcoCommand() {
-        eco = Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
+    public EcoCommand(EasyConomyProvider ecp) {
+        this.eco = ecp;
         msg = MessageTranslator.getInstance();
     }
 
@@ -27,7 +32,7 @@ public class EcoCommand implements CommandExecutor {
         label = label.toLowerCase();
         if(label.equals("eco") && args.length == 0) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&aEasyConomy by Weiiswurst#0016 Version "+ Easyconomy.getInstance().getDescription().getVersion()));
+                    "&aEasyConomy by Weiiswurst#0016 Version @version@\n&7Binary Storage option by &bGeolykt"));
             return true;
         } else {
             String permission = Configuration.get().getString("permissions.modify","");
@@ -38,6 +43,28 @@ public class EcoCommand implements CommandExecutor {
             if(label.equals("eco")) {
                 if(args.length == 1 && args[0].equalsIgnoreCase("help")) {
                     sender.sendMessage(msg.getMessage("eco.helpMessage",true));
+                    return true;
+                } else if(args.length == 1 && args[0].equalsIgnoreCase("backup")) {
+                    sender.sendMessage(msg.getMessage("backup.starting"));
+                    eco.getStorage().save();
+
+                    File backupFolder = new File("plugins"+File.separator+"EasyConomy"+File.separator+"backups");
+                    backupFolder.mkdir();
+
+                    File backupFile = new File(backupFolder,
+                            new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +
+                                    '.' +
+                                    Files.getFileExtension(eco.getStorage().getStorageFile().getPath())
+                    );
+
+                    try {
+                        Files.copy(eco.getStorage().getStorageFile(), backupFile);
+                    } catch (IOException e) {
+                        sender.sendMessage(msg.getMessage("backup.error"));
+                        return true;
+                    }
+
+                    sender.sendMessage(msg.getMessage("backup.finished"));
                     return true;
                 }
                 if(args.length != 3) {

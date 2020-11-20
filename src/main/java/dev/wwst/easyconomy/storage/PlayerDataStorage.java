@@ -1,33 +1,35 @@
 package dev.wwst.easyconomy.storage;
 
+import org.bukkit.OfflinePlayer;
+
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.bukkit.OfflinePlayer;
 
 /**
  * @author Weiiswurst
  */
 public interface PlayerDataStorage {
 
-    public double getPlayerData(OfflinePlayer p);
+    double getPlayerData(OfflinePlayer p);
 
-    public double getPlayerData(UUID player);
+    double getPlayerData(UUID player);
 
-    public List<UUID> getAllData();
+    List<UUID> getAllData();
 
     /*
      ** Saves the current FileConfiguration to the file on the disk
      */
-    public void save();
+    void save();
 
-    public void write(UUID key, double value);
+    void write(UUID key, double value);
 
-    public void reload();
+    void reload();
 
-    public Map<UUID, Double> getBaltop();
+    Map<UUID, Double> getBaltop();
     
-    public boolean has(UUID key);
+    boolean has(UUID key);
 
+    File getStorageFile();
 }

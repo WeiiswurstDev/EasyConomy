@@ -30,6 +30,11 @@ startingBalance: 0
 use-binary: false
 storage-location: "balances.yml"
 
+# The shell command run within the backup folder to run after the files have been moved during a backup. Leave empty to run no command.
+# This is a single command and cannot do anything to complicated, if you have issues with it, outsource it into a script file.
+# Script files need to have 775 or similar in terms of permissions in order to work.
+onbackup: ["./onbackup.sh"]
+
 minimumTransactionAmount: 0.1
 # All decimals shown
 decimalsShown: -1

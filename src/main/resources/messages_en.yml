@@ -1,4 +1,4 @@
-# English translation: Weiiswurst#0016
+# English translation: Weiiswurst#0016, Geolykt
 
 general:
   insufficientFunds: "&cInsufficient funds! You need an additional &e%s &cto afford this payment!"
@@ -31,3 +31,4 @@ backup:
   starting: "&7Creating backup, please wait"
   error: "&cThere was an error while creating the backup."
   finished: "&aSuccess!"
+  timeout: "&cThe backup postprocess command took too long and was terminated."

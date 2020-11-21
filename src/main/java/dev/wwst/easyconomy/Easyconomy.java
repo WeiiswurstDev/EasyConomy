@@ -17,6 +17,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,8 +73,13 @@ public final class Easyconomy extends JavaPlugin {
 
         PluginManager pm = Bukkit.getPluginManager();
 
+        //Create backup folder
+        if (new File(getDataFolder(), "backups").mkdir()) {
+            saveResource("backups/onbackup.sh", false);
+        }
+
         getCommand("balance").setExecutor(new BalanceCommand());
-        getCommand("eco").setExecutor(new EcoCommand(ecp));
+        getCommand("eco").setExecutor(new EcoCommand(this, Configuration.get().getStringList("onbackup")));
         getCommand("pay").setExecutor(new PayCommand());
         getCommand("baltop").setExecutor(new BaltopCommand());
 

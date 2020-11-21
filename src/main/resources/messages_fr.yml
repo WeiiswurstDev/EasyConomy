@@ -31,3 +31,4 @@ backup:
   starting: "&7Création d'une sauvegarde, attendez svp.."
   error: "&cIl y a eu une erreur durant la création de la sauvegarde !"
   finished: "&Sauvegarde effectuée !"
+  timeout: "&cIl y a eu une erreur durant la création de la sauvegarde !" # TODO use a less vague error.

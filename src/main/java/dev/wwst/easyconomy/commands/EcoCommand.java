@@ -2,6 +2,7 @@ package dev.wwst.easyconomy.commands;
 
 import com.google.common.io.Files;
 import dev.wwst.easyconomy.EasyConomyProvider;
+import dev.wwst.easyconomy.Easyconomy;
 import dev.wwst.easyconomy.utils.Configuration;
 import dev.wwst.easyconomy.utils.MessageTranslator;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -11,20 +12,37 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class EcoCommand implements CommandExecutor {
 
+    private final JavaPlugin plugin;
     private final EasyConomyProvider eco;
     private final MessageTranslator msg;
+    private final String[] postBackupCommand;
 
-    public EcoCommand(EasyConomyProvider ecp) {
-        this.eco = ecp;
-        msg = MessageTranslator.getInstance();
+    /**
+     * Creates a new EcoCommand instance which basically provides an interface with the economy.
+     * @param pluginInstance The plugin that it should link to, used to locate files that should be backed up as well as allowing economy manipulation to work.
+     *                       It is also used to start async tasks.
+     * @param backupCommand The shell command that should be run after the files have been moved to the backup location. Run in the backup folder. Nullable.
+     */
+    public EcoCommand(Easyconomy pluginInstance, Collection<String> backupCommand) {
+        this.eco = pluginInstance.getEcp();
+        this.msg = MessageTranslator.getInstance();
+        this.plugin = pluginInstance;
+        if (backupCommand == null || backupCommand.size() == 0) {
+            this.postBackupCommand = null;
+        } else {
+            this.postBackupCommand = backupCommand.toArray(new String[0]);
+        }
     }
 
     @Override
@@ -64,7 +82,26 @@ public class EcoCommand implements CommandExecutor {
                         return true;
                     }
 
-                    sender.sendMessage(msg.getMessage("backup.finished"));
+                    if (postBackupCommand == null) {
+                        sender.sendMessage(msg.getMessage("backup.finished"));
+                    } else {
+                        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                            ProcessBuilder procBuilder = new ProcessBuilder(postBackupCommand).directory(backupFolder).inheritIO();
+                            try {
+                                Process proc = procBuilder.start();
+                                if (!proc.waitFor(15, TimeUnit.SECONDS)) {
+                                    sender.sendMessage(msg.getMessage("backup.timeout", true));
+                                    proc.destroy();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace(); // these are chronic issues and need to be patched by whoever reads the log
+                                Easyconomy.getInstance().getLogger().warning("If you are getting a permission denied error, then you may want to chmod the file.");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace(); // these are issues induced by other plugins or the server software
+                            }
+                            sender.sendMessage(msg.getMessage("backup.finished"));
+                        });
+                    }
                     return true;
                 }
                 if(args.length != 3) {

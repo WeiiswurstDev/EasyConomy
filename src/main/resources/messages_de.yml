@@ -1,4 +1,4 @@
-# German translation: Weiiswurst#0016
+# German translation: Weiiswurst#0016, Geolykt
 
 general:
   insufficientFunds: "&cDir fehlen &e%s&c, um das zu bezahlen!"
@@ -31,3 +31,4 @@ backup:
   starting: "&7Erstelle Backup, das kann einen Moment dauern"
   error: "&cBeim Erstellen des Backups ist ein Fehler aufgetreten."
   finished: "&aFertig!"
+  timeout: "&cDer Backup brauchte zu viel Zeit um fertiggestellt zu werden und wurde terminiert."

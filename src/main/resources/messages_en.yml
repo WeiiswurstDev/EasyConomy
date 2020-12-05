@@ -14,7 +14,7 @@ balance:
 
 eco:
   helpMessage: "Available commands: &a/eco, /eco backup, /eco give|take|set <player> <amount>, /bal [player], /pay <player> <amount>, /baltop"
-  success: "You changed the balance of %s by %s. He now has %s"
+  success: "You changed the balance of %s by %s. They now have %s"
 
 pay:
   you: "You paid &6%s %s&7. You know have &6%s&7."

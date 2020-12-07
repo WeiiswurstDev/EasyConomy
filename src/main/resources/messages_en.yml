@@ -2,7 +2,7 @@
 
 general:
   insufficientFunds: "&cInsufficient funds! You need an additional &e%s &cto afford this payment!"
-  notAnumber: "&e%s &cis not a number or larger/smaller than about 2 billions! Please supply a number like 10 or 15.22"
+  notAnumber: "&e%s &cis not a number or too small/big! Please supply a number like 10 or 15.22"
   syntax: "&cSyntax: &e%s"
   noPerms: "&cMissing permission: &e%s"
   playerOnly: "&cThis command can only be used as a player."
@@ -17,8 +17,8 @@ eco:
   success: "You changed the balance of %s by %s. They now have %s"
 
 pay:
-  you: "You paid &6%s %s&7. You know have &6%s&7."
-  target: "&6%s &7paid you&6 %s&7. You know have &6%s&7."
+  you: "You paid &6%s %s&7. You now have &6%s&7."
+  target: "&6%s &7paid you&6 %s&7. You now have &6%s&7."
   self: "&cYou can't pay yourself!"
   amountTooSmall: "&cThe amount is too small! You must pay at least &e%s&c!"
 

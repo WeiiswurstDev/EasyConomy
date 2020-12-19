@@ -79,8 +79,11 @@ public class MessageTranslator {
 
     private void saveDefaults() {
         for(String translation : translations) {
-            plugin.saveResource("messages_"+translation+".yml", true);
-            plugin.getLogger().log(Level.INFO, "Default language exported: messages_"+translation+".yml");
+            String filename = "messages_" + translation + ".yml";
+            if (!new File(plugin.getDataFolder(), filename).exists()) {
+                plugin.saveResource(filename, true);
+                plugin.getLogger().log(Level.INFO, "Default language exported: " + filename);
+            }
         }
     }
 
